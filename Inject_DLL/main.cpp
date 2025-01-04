@@ -57,7 +57,7 @@ int main() {
 			return 1;
 		}
 
-		char dllPath[MAX_PATH] = "C:\\Users\\DuongLucky\\Desktop\\GameHacking\\Release\\PvZHack.dll";
+		char dllPath[MAX_PATH] = "PvZHack.dll";
 		std::cout << "[+] Opened process!" << std::endl;
 
 		// Allocate game's memory
