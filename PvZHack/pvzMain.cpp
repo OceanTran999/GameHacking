@@ -26,8 +26,10 @@ void WritetoMem(DWORD* targetWri, DWORD wtrPtr)
 
 namespace offset {
 	DWORD start_base = 0x10C740;							// Change this
-	int round[6] = {0x3C, 0x28, 0x15C, 0x2FC, 0xFC, 0x4};	// Change this
+	DWORD coin_base = 0x326E14;								// Change this
+	int round[6] = {0x3C, 0x28, 0x15C, 0x2AC, 0x118, 0x4C};	// Change this
 	DWORD sun = 0x5578;
+	DWORD coin = 0x178;
 }
 
 //void debugInfo(DWORD* addr) {
@@ -40,6 +42,7 @@ void hackTime(LPVOID param)
 {
 	while (true)
 	{
+		// F5 for sun's value
 		if (GetAsyncKeyState(VK_F5) & 80000) {
 			// Get base address
 			DWORD* baseAddress = (DWORD*)((DWORD)GetModuleHandle(NULL) + offset::start_base);
@@ -51,14 +54,28 @@ void hackTime(LPVOID param)
 			}
 			
 			// Calculate address of sun's value
-			DWORD* sunaddr = (DWORD*)(*baseAddress + offset::sun);
+			DWORD* sunaddr = (DWORD*)((*baseAddress + offset::sun));
 
 			// Read the current value
 			DWORD currentVal = ReadfromMem(sunaddr);
-			currentVal += 1000;
+			currentVal += 5000;
 
 			// Modify the current value
 			WritetoMem(sunaddr, currentVal);
+		}
+		
+		// F6 for coin's value
+		else if (GetAsyncKeyState(VK_F6) & 80000)
+		{
+			DWORD* baseAddr = (DWORD*)((DWORD)GetModuleHandle(NULL) + offset::coin_base);
+			DWORD* coinaddr = (DWORD*)(*baseAddr + offset::coin);
+			
+			// Get coin
+			DWORD currentVal = ReadfromMem(coinaddr);
+			currentVal += 100000;
+
+			// Update coin
+			WritetoMem(coinaddr, currentVal);
 		}
 		Sleep(100);
 	}
